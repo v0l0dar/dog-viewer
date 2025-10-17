@@ -8,8 +8,16 @@
         :isFavorite="favorites.includes(mainDog)"
         @toggle-fav="toggleFavorite"
       />
+      <div class="viewer__thumbnails">
+        <DogThumbnail
+          v-for="dog in dogs"
+          :key="dog"
+          :src="dog"
+          :breed="getBreed(dog)"
+          @select="setMainDog"
+        />
+      </div>
       <p>{{ favorites }}</p>
-      <p>{{ dogs }}</p>
     </div>
   </div>
 </template>
@@ -20,10 +28,12 @@ import { storeToRefs } from 'pinia'
 import { useDogsStore } from '@/stores/dog'
 
 import DogMainImage from '@/components/DogMainImage.vue'
+import DogThumbnail from '@/components/DogThumbnail.vue'
+import FavoritesList from '@/components/FavoritesList.vue'
 
 const dogsStore = useDogsStore()
 const { mainDog, dogs, favorites } = storeToRefs(dogsStore)
-const { fetchDogs, toggleFavorite } = dogsStore
+const { fetchDogs, toggleFavorite, setMainDog } = dogsStore
 
 function getBreed(url: string) {
   const parts = url.split('/')
@@ -46,5 +56,10 @@ onMounted(fetchDogs)
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+.viewer__thumbnails {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
 }
 </style>
