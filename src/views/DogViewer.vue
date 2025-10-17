@@ -17,8 +17,8 @@
           @select="setMainDog"
         />
       </div>
-      <p>{{ favorites }}</p>
     </div>
+    <FavoritesList :favorites="favorites" @select="setMainDog" @remove="toggleFavorite" />
   </div>
 </template>
 
